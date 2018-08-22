@@ -1,0 +1,51 @@
+html {
+    width: 100%;
+    height: 100%;
+    background-color: dimgray;
+}
+body {
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+    height: 100%;
+}
+div {
+    display: block;
+}
+header {
+    position: absolute;
+    width: 100%;
+    height: 70px;
+}
+#headercontent {
+    position: absolute;
+    height: 120px;
+    margin: 0px auto
+}
+#logopic {
+    height: 60px;
+    float: left;
+    padding: 10px 20px;
+}
+.fix_block {
+    clear: both;
+    height: 0px;
+}
+#headerbar {
+    width: 100%;
+    min-width: 594px;
+    height: 184px;
+    overflow: hidden;
+    position: relative;
+    background: transparent url(../Images/HeaderBar.png) 50% 50% no-repeat;
+}
+#content {
+    width: 100%;
+    height: 100%;
+}
+.bot {
+    float: left;
+}
+#botlink {
+    color: brown;
+}
