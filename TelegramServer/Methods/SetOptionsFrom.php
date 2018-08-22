@@ -18,11 +18,11 @@ class SetOptionsFrom {
                 $parsed_link = Including::GetLink();
                 $products = Functions::GetProducts($parsed_link, '' . $command[1] . '');
                 if($command[0] <= count($products)) {
-                    $sendmessage_options['response'] .= "Price: $" . $products[intval($command)-1]['tproduct_price'] . "\n";
-                    if($products[intval($command)-1]['tproduct_prime'] == 1) {
+                    $sendmessage_options['response'] .= "Price: $" . $products[intval($command[0])-1]['tproduct_price'] . "\n";
+                    if($products[intval($command[0])-1]['tproduct_prime'] == 1) {
                         $sendmessage_options['response'] .= "Prime account" . "\n";
                     }
-                    $sendmessage_options['response'] .= $products[intval($command)-1]['tproduct_link'] . "";
+                    $sendmessage_options['response'] .= $products[intval($command[0])-1]['tproduct_link'] . "";
                     /*$sendmessage_options['keyboard'] = [
                         'inline_keyboard' => [
                             [
