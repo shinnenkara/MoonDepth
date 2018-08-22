@@ -55,6 +55,7 @@ class ParserAPI {
 
             $tproduct_link = array();
             $tproduct_id = array();
+            $tproduct_rate = array();
             $tlinks = $dom->find(".acswidget-carousel-redesign__product-title");
             for($ti = 0; $ti < count($tlinks); $ti++) {
                 $tproduct_l = "https://www.amazon.com" . $tlinks[$ti]->href;
@@ -62,6 +63,20 @@ class ParserAPI {
                 $tproduct_lid = explode("product/", $tproduct_l[0]);
                 $tproduct_link[$ti] = $tproduct_l[0];
                 $tproduct_id[$ti] = $tproduct_lid[1];
+                /*$toptions = array(CURLOPT_URL => $tproduct_link[$ti], 
+                    CURLOPT_REFERER => "https://www.amazon.com",
+                    CURLOPT_PROXY => $proxy,
+                    CURLOPT_USERAGENT => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36 Edge/16.16299",
+                    CURLOPT_HEADER => 0,
+                    CURLOPT_FOLLOWLOCATION => 1,
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_TIMEOUT => 60);
+                $tch = curl_init(); // create cURL handle (ch) 
+                curl_setopt_array($tch, $toptions);
+                $trate = curl_exec($tch); // execute
+                $trate_dom = str_get_html($trate);
+                $tproduct_r = $trate_dom->find(".reviewCountTextLinkedHistogram", 0);
+                $tproduct_rate[$ti] = $tproduct_r->plaintext;*/
             }
             $tproduct_price = array();
             $tprices = $dom->find(".acswidget-carousel-redesign__product-price");
@@ -69,7 +84,7 @@ class ParserAPI {
                 $tproduct_p = trim(strval($tprices[$ti]->plaintext));
                 $tproduct_p = explode(" ", $tproduct_p);
                 $tproduct_pr = str_replace("$", "", $tproduct_p[0]);
-                $tproduct_price[$ti] = floatval($tproduct_pr[1]);
+                $tproduct_price[$ti] = floatval($tproduct_pr);
             }
             $tproduct_prime = array();
             $tprimes = $dom->find(".acswidget-carousel-redesign__product-price i");

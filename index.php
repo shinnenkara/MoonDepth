@@ -24,7 +24,7 @@ $Token = "622213887:AAE0JQsOmBj6NVNf3eWhX2OFVQWyIoxITfM";
 $website = "https://api.telegram.org/bot" . $Token;
 $parsed_link = Including::GetLink();
 $products = array();
-//ParserAPI::ParseNew($parsed_link);
+ParserAPI::ParseNew($parsed_link);
 /*$parsed_link = Including::GetLink();
 $products = Functions::GetProducts($parsed_link);
 $current_date = intval(date("ymdHi"));
