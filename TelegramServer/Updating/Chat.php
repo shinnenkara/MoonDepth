@@ -23,7 +23,17 @@ class Chat {
     public static function GetUpdChatId($updatedArray = NULL) {
 
         return $updatedArray["result"][0]["message"]["chat"]["id"];
-    }    
+    }
+
+    public static function GetWebChatUsername($updatedArray = NULL) {
+
+        return $updatedArray["message"]["chat"]["username"];
+    }
+
+    public static function GetUpdChatUsername($updatedArray = NULL) {
+
+        return $updatedArray["result"][0]["message"]["chat"]["username"];
+    }   
 
     public static function GetWebText($updatedArray = NULL) {
 

@@ -45,11 +45,16 @@ class ScanContent {
         
         switch($command_type) {
             case NULL: {
-                $t = explode("_", $command);
-                if($t[0] >= 0) {
+                $command_int = explode("_", $command);
+                if($command_int[0] >= 1) { 
                     $command_type = "integer";
                 } else {
-                    $command_type = "text";
+                    $am = explode("am ", $command);
+                    if($am[0] == "") {
+                        $command_type = "anonymous_message";
+                    } else {
+                        $command_type = "text";
+                    }
                 }
                 break;
             }

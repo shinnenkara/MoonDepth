@@ -1,7 +1,7 @@
 <?php
 namespace Parser;
 use Parser\cURL\cURLOptions;
-use Parser\Database\Functions;
+use Parser\Database\FunctionsParser;
 use Parser\Exceptions\DataExceptions;
 use Parser\Exceptions\cURLExceptions;
 
@@ -53,6 +53,12 @@ class ParserAPI {
                 $tamount[$ti] = intval(str_replace($brackets, "", $title_exp[$ti][count($title_exp[$ti]) - 1]));
             }
 
+            $tproduct_image = array();
+            $timage = $dom->find(".acswidget-carousel-redesign__product-image-container");
+            for($ti = 0; $ti < count($timage); $ti++) {
+                $tproduct_image[$ti] = $timage->src;
+            }
+
             $tproduct_link = array();
             $tproduct_id = array();
             $tproduct_rate = array();
@@ -100,6 +106,11 @@ class ParserAPI {
             for($ti = 0; $ti < count($ttitles); $ti++) {
                 $tproduct_title[$ti] = $ttitles[$ti]->title;
             }
+            $tproduct_image = array();
+            $timage = $dom->find(".acswidget-carousel-redesign__product-image-container");
+            for($ti = 0; $ti < count($timage); $ti++) {
+                $tproduct_image[$ti] = $timage[$ti]->find("img", 0)->src;
+            }
 
             $table = "";
             for($ti = 0, $i = 0, $fa = 0; $ti < count($title); $ti++) {
@@ -130,7 +141,108 @@ class ParserAPI {
                     }
                 }
                 for($i; $i < $fa; $i++) {
-                    Functions::SetProducts($link, $table, $tproduct_id[$i], $tproduct_title[$i], $tproduct_link[$i], $tproduct_price[$i], $tproduct_prime[$i]);
+                    $tproduct_date[$i] = intval(date("ymdHi"));
+                    FunctionsParser::SetProducts($link, $table,
+                                        $tproduct_id[$i],
+                                        $tproduct_title[$i],
+                                        $tproduct_link[$i],
+                                        $tproduct_image[$i],
+                                        $tproduct_price[$i],
+                                        $tproduct_rate[$i],
+                                        $tproduct_prime[$i],
+                                        $tproduct_date[$i]);
+                }
+            }
+
+            $tproduct_title = array();
+            $tproduct_link = array();
+            $tproduct_id = array();
+            $ttitles = $dom->find(".s-color-twister-title-link");
+            for($ti = 0; $ti < count($ttitles); $ti++) {
+                $tproduct_title[$ti] = $ttitles[$ti]->title;
+                $tproduct_l = $ttitles[$ti]->href;
+                $tproduct_l = explode("/ref", $tproduct_l);
+                $tproduct_lid = explode("dp/", $tproduct_l[0]);
+                $tproduct_link[$ti] = $tproduct_l[0];
+                $tproduct_id[$ti] = $tproduct_lid[1];
+            }
+            $tproduct_price = array();
+            $tprices = $dom->find(".sx-price-large");
+            for($ti = 0; $ti < count($tprices); $ti++) {
+                $tproduct_p = trim(strval($tprices[$ti]->plaintext));
+                $tproduct_p = trim(str_replace("$", "", $tproduct_p));
+                for($i = 0, $k = 0; $i < (strlen($tproduct_p)); $i++) {
+                    if($tproduct_p[$i] == " ") {
+                        if($k == 0) {
+                            $tproduct_p[$i] = ".";
+                            $k++;
+                        }
+                        break;
+                    }
+                }
+                $tproduct_p = explode(".", $tproduct_p);
+                $tproduct_pr = trim($tproduct_p[0]) . "." . trim($tproduct_p[1]);
+                if($ti == count($tprices) - 1) {
+                    $tproduct_price[0] = floatval($tproduct_pr);
+                } else {
+                    $tproduct_price[$ti + 1] = floatval($tproduct_pr);
+                }
+            }
+            $tproduct_prime = array();
+            /*$tprimes = $dom->find(".a-icon.a-icon-prime.a-icon-small.s-align-text-bottom");
+            for($ti = 0; $ti < count($tprimes); $ti++) {
+                if($tprimes[$ti] != NULL) {
+                    $tproduct_prime[$ti] = 1;
+                } else {
+                    $tproduct_prime[$ti] = 0;
+                }
+            }*/
+            /*$tproduct_image = array();
+            $timage = $dom->find(".s-position-relative");
+            for($ti = 0; $ti < count($timage); $ti++) {
+                $tproduct_image[$ti] = $timage[$ti]->find("img", 0)->src;
+            }
+            $tproduct_rate = array();
+            $trate = $dom->find("div=[class='s-item-container']");
+            for($ti = 0; $ti < count($trate); $ti++) {
+                $tproduct_rate[$ti] = trim($trate[$ti]->find(".a-icon-star", 0)->plaintext);
+            }*/
+            
+            /*echo $pageBanner . "<br/><br/>";
+            for($i = 0; $i < count($tproduct_title); $i++) {
+                if($tproduct_id[$i] == NULL) {
+                    continue;
+                } else {
+                    echo ($i + 1) . ". " . $tproduct_link[$i] . " | " . $tproduct_price[$i];
+                    if($tproduct_prime[$i] == 1) {
+                        echo " | " . "Prime account";
+                    }
+                    echo " | " . $tproduct_id[$i] . " | "
+                    . $tproduct_title[$i] . " | "
+                    . $tproduct_image[$i] . " | "
+                    //. $tproduct_reviews[$i] . " | "
+                    . $tproduct_rate[$i]
+                    . "<br/>";
+                }
+            }
+            echo "<br/>";*/
+
+            $table = "GH_all";
+            for($i = 0; $i < count($tproduct_title); $i++) {
+                $tproduct_date[$i] = intval(date("ymdHi"));
+                $tproduct_prime[$i] = 0;
+                if($tproduct_id[$i] == NULL) {
+                    continue;
+                } else {
+                    FunctionsParser::SetProducts($link, $table,
+                                        $tproduct_id[$i],
+                                        $tproduct_title[$i],
+                                        $tproduct_link[$i],
+                                        $tproduct_image[$i],
+                                        $tproduct_price[$i],
+                                        $tproduct_rate[$i],
+                                        $tproduct_prime[$i],
+                                        $tproduct_date[$i]);
                 }
             }
 
@@ -152,7 +264,7 @@ class ParserAPI {
                 }
                 echo "<br/>";
             }*/
-            //Functions::SetIds($link);*/
+            //FunctionsParser::SetIds($link);*/
         }
     }
 }

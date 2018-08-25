@@ -1,15 +1,15 @@
 <?php
 namespace Parser\Database;
 
-class Including {
+class IncludingParser {
     
     public static function GetLink() {
 
         #$url = "";
         $server = 'localhost';
-        $username = 'id6861252_karasick';
-        $password = 'm91tnaya';
-        $db = 'id6861252_projectfortest001db';
+        $username = 'root';
+        $password = '';
+        $db = 'test';
 
         $link = mysqli_connect($server, $username, $password, $db);
 

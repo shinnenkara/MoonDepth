@@ -1,7 +1,7 @@
 <?php
 namespace Parser\Database;
 
-class Functions { 
+class FunctionsParser { 
 
     public static function GetProducts($link, $table) {
 
@@ -15,9 +15,9 @@ class Functions {
         return $products;
     }
 
-    public static function SetProducts($link, $table, $tproduct_id, $tproduct_title, $tproduct_link, $tproduct_price, $tproduct_prime) {
+    public static function SetProducts($link, $table, $tproduct_id, $tproduct_title = NULL, $tproduct_link = NULL, $tproduct_image = NULL, $tproduct_price = 49.98, $tproduct_rate = NULL, $tproduct_prime = NULL, $tproduct_date = NULL) {
 
-        $sql = "INSERT INTO `$table`(`tproduct_id`, `tproduct_title`, `tproduct_link`, `tproduct_price`, `tproduct_prime`) VALUES ('$tproduct_id','$tproduct_title','$tproduct_link','$tproduct_price','$tproduct_prime')";
+        $sql = "INSERT INTO `$table`(`tproduct_id`, `tproduct_title`, `tproduct_link`, `tproduct_image`, `tproduct_price`, `tproduct_rate`, `tproduct_prime`, `tproduct_date`) VALUES ('$tproduct_id','$tproduct_title','$tproduct_link','$tproduct_image','$tproduct_price','$tproduct_rate','$tproduct_prime','$tproduct_date')";
         $result = mysqli_query($link, "SET NAMES utf8");
         $result = mysqli_query($link, $sql);
 
@@ -63,7 +63,7 @@ class Functions {
                         } elseif($descr[$i]['amount'] != $amount && $descr[$i]['current'] != $current) {
                             $sql = "UPDATE `releases` SET `amount` = '$amount', `current` = '$current', `date` = '$date', `id` = '$id', `tlink` = '$tlink' WHERE `release` = '$release'";
                         } else {
-                            return 1062;
+                            return 1062; 
                         }
                     }
                 }
