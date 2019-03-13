@@ -1,78 +1,79 @@
 <?php
-include 'WebServer/MainPage.html';
+include "WebServer/php/Database.php";
+include "WebServer/MainPage.php";
 ini_set('error_reporting', E_ALL);
-
-include 'Messenger/Database/IncludingMessenger.php';
-include 'Messenger/Database/FunctionsMessenger.php';
-include 'Messenger/MessengerAPI.php';
-use \Messenger\Database\FunctionsMessenger;
-use \Messenger\Database\IncludingMessenger;
-use \Messenger\MessengerAPI;
-include 'Parser/cURL/cURLOptions.php';
-include 'Parser/Database/IncludingParser.php';
-include 'Parser/Database/FunctionsParser.php';
-include 'Parser/Exceptions/cURLExceptions.php';
-include 'Parser/ParserAPI.php';
-include 'Parser/simple_html_dom.php';
-use \Parser\Database\FunctionsParser;
-use \Parser\Database\IncludingParser;
-use \Parser\ParserAPI;
-include_once 'TelegramServer/Methods/SendContent.php';
-include_once 'TelegramServer/Methods/ScanContent.php';
-include_once 'TelegramServer/Methods/SetOptionsFrom.php';
-include_once 'TelegramServer/Updating/Chat.php';
-use \TelegramServer\Methods\ScanContent;
-use \TelegramServer\Methods\SendContent;
-use \TelegramServer\Methods\SetOptionsFrom;
-use \TelegramServer\Updating\Chat;
-
-$Token = "622213887:AAE0JQsOmBj6NVNf3eWhX2OFVQWyIoxITfM";
-$website = "https://api.telegram.org/bot" . $Token;
-$parsed_link = IncludingParser::GetLink();
-$messenger_link = IncludingMessenger::GetLink();
-$products = array();
-//ParserAPI::ParseNew($parsed_link);
-/*$parsed_link = IncludingParser::GetLink();
-$products = Functions::GetProducts($parsed_link);
-$current_date = intval(date("ymdHi"));
-if($current_date > (intval($products[0]['date']) + 100)) {
-    ParserAPI::ParseNew($parsed_link);
-    $products = Functions::GetProducts($parsed_link);
-}*/
-
-/* GetUpdates or Webhook methods */
-#$updatedArray = Chat::WebUpdate();
-#$chatId = Chat::GetWebChatId($updatedArray);
-#$text = Chat::GetWebText($updatedArray);
-#$username = Chat::GetWebChatUsername($updatedArray);
-
-$updatedArray = Chat::GetUpdate($website);
-$chatId = Chat::GetUpdChatId($updatedArray);
-$text = Chat::GetUpdText($updatedArray);
-$username = Chat::GetUpdChatUsername($updatedArray);
-
-$sendmessage_options = array('website' => $website, 'chatId' => $chatId, 'username' => $username, 'response' => NULL, 'keyboard' => NULL);
-$message = ScanContent::Message($text);
-$message_type = ScanContent::MessageType($message);
-switch($message_type) {
-    case "command": {
-        $command = $message[1];
-        $command_type = ScanContent::CommandType($command);
-        $sendmessage_options = SetOptionsFrom::Command($sendmessage_options, $command, $command_type, $products);
-        break;
-    }
-    case "message": {
-        $text_responses = array(0 => "Yes ?", "Here I come", "How ?", "You are nice)", "Nya", "You laught - you lose!", "*ugly barking*");
-        $sendmessage_options['response'] = $text_responses[rand(0, 6)];
-        break;
-    }
-    case "badmessage": {
-        $sendmessage_options['response'] = "Something goes wrong...";
-        break;
-    }
-    default: {
-        $sendmessage_options['response'] = "Try again";
-    }
-}
-SendContent::SendMessage($sendmessage_options);
+use \WebServer\php\Database;
+$link = Database::GetLinkToDB();
 ?>
+<div class="section no-pad-bot scrollspy" id="introduction-banner">
+    <div class="container white-text">
+        <h2 class="center">
+            <div>Welcome fellow man</div>
+        </h2>
+    </div>
+</div>
+<div class="container white-text">
+    <div class="row">
+        <div class="col s12 m6 l4 center"><h3><i>Big Board:</i></h3><br>
+            <?php
+            $big_board = Database::FindBigBoard($boards);
+            echo "<a class = \"white-text text-navbar\" href = \"board?headline=" . $big_board["headline"] . "\" title=\"" . $big_board["description"] . "\">"
+            . "/" . $big_board["headline"] . "/ - " . $big_board["description"] . "<br>";
+            ?>
+        </div>
+        <div class="col s12 m6 l4 center"><h3><i>Best board:</i></h3><br>
+            <?php
+            echo "<a class = \"white-text text-navbar\" href = \"board?headline=" . $boards[0]["headline"] . "\" title=\"" . $boards[0]["description"] . "\">"
+            . "/" . $boards[0]["headline"] . "/ - " . $boards[0]["description"] . "<br>";
+            ?>
+        </div>
+        <div class="col s12 m12 l4 center"><h3><i>Your board:</i></h3><br>
+            <?php
+            $rand_board = rand(0,31);
+            if($rand_board == 0) {
+                echo "Look left" . "<br>";
+            } else {
+                echo "<a class = \"white-text text-navbar\" href = \"board?headline=" .  $boards[$rand_board]["headline"] . "\" title=\"" . $boards[$rand_board]["description"] . "\">"
+                . "/" . $boards[$rand_board]["headline"] . "/ - " . $boards[$rand_board]["description"] . "<br>";
+            }
+            ?>
+        </div>
+    </div>
+</div>
+<br><br><br><br><br><br><br>
+<?php
+include 'WebServer/Footer.html';
+?>
+<script
+    src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous">
+</script>
+<script src="WebServer/js/materialize.min.js">
+</script>
+<script src="WebServer/js/init.js">
+</script>
+<script type = "text/javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+    var SSpy_elements = document.querySelectorAll('.scrollspy');
+    var SSpy_options = {throttle: 100, scrollOffset: 5, activeClass: "active"};
+    var instances = M.ScrollSpy.init(SSpy_elements, SSpy_options);
+    });
+</script>
+<script type = "text/javascript">
+    function scrollToTop() {
+        var graphics = document.getElementById("top-nav");
+        graphics.scrollIntoView({block: "start", behavior: "smooth"});
+    }
+    window.onscroll = function() {
+        var scrolled = window.pageYOffset || document.documentElement.scrollTop;
+        var toTopButton = document.getElementById("toTop-button");
+        if (toTopButton.style.display === "none" && scrolled >= 0) {
+            $(toTopButton).toggle();
+        } else if(toTopButton.style.display !== "none" && scrolled == 0) {
+            $(toTopButton).toggle();
+        }
+    }
+</script>
+</body>
+</html>

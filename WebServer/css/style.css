@@ -1,3 +1,99 @@
 nav {
-    background-color: blue;
+    background-color: grey; 
+}
+.icon-block {
+    padding: 0 10px;
+}
+.icon-block .material-icons {
+	font-size: inherit;
+}
+.sidenav {
+    width: 200px;
+}
+header, main, footer {
+    padding-left: 40px;
+}
+body {
+    background: #212121; /* indigo darken-4 */
+}
+#nav-mobile {
+    background: #424242; /* indigo darken-3 */
+}
+@media only screen and (max-width: 992px) {
+    header, main, footer {
+        padding-left: 0px;
+    }
+}
+.text-navbar {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+#logo-container {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+::-webkit-scrollbar {
+    width: 10px;
+}
+::-webkit-scrollbar-track {
+    background: #424242; /* indigo darken-3 */
+}
+::-webkit-scrollbar-thumb {
+    background: #616161; /* indigo darken-2 */
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #757575; /* indigo darken-1 */
+}
+#welcome {
+    padding: 0 0 1.5rem 0;
+}
+.thread-head, .thread-body, .message-head, .message-body {
+    background: #424242;
+    border-color: #616161;
+    border-style: solid;
+    border-width: 1px;
+}
+.hidethread-icons, .hidemessage-icons {
+    font-size: 24px;
+    cursor: pointer;
+}
+input:not([type]):focus:not([readonly]),
+input[type=text]:not(.browser-default):focus:not([readonly]),
+input[type=password]:not(.browser-default):focus:not([readonly]),
+input[type=email]:not(.browser-default):focus:not([readonly]),
+input[type=url]:not(.browser-default):focus:not([readonly]),
+input[type=time]:not(.browser-default):focus:not([readonly]),
+input[type=date]:not(.browser-default):focus:not([readonly]),
+input[type=datetime]:not(.browser-default):focus:not([readonly]),
+input[type=datetime-local]:not(.browser-default):focus:not([readonly]),
+input[type=tel]:not(.browser-default):focus:not([readonly]),
+input[type=number]:not(.browser-default):focus:not([readonly]),
+input[type=search]:not(.browser-default):focus:not([readonly]),
+textarea.materialize-textarea:focus:not([readonly]) {
+  border-bottom: 1px solid #616161;
+  -webkit-box-shadow: 0 1px 0 0 #616161;
+          box-shadow: 0 1px 0 0 #616161;
+}
+input:not([type]):focus:not([readonly]) + label,
+input[type=text]:not(.browser-default):focus:not([readonly]) + label,
+input[type=password]:not(.browser-default):focus:not([readonly]) + label,
+input[type=email]:not(.browser-default):focus:not([readonly]) + label,
+input[type=url]:not(.browser-default):focus:not([readonly]) + label,
+input[type=time]:not(.browser-default):focus:not([readonly]) + label,
+input[type=date]:not(.browser-default):focus:not([readonly]) + label,
+input[type=datetime]:not(.browser-default):focus:not([readonly]) + label,
+input[type=datetime-local]:not(.browser-default):focus:not([readonly]) + label,
+input[type=tel]:not(.browser-default):focus:not([readonly]) + label,
+input[type=number]:not(.browser-default):focus:not([readonly]) + label,
+input[type=search]:not(.browser-default):focus:not([readonly]) + label,
+textarea.materialize-textarea:focus:not([readonly]) + label {
+  color: #616161;
+}
+.btn {
+    background-color: #424242;
+}
+.btn:hover, .btn-large:hover, .btn-small:hover {
+  background-color: grey;
 }
